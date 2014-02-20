@@ -2,7 +2,7 @@
 
 def make_guess
   #returns a guess that is one charater long OR compares against the whole word
-  puts "Please enter your guess of a letter or the word: "
+  print "Guess a single letter (a-z) or the entire word: "
   guess = gets.chomp
 
   if !(/[a-zA-z]/.match(guess))
@@ -30,7 +30,6 @@ def rand_word
 end
 
 def is_in?(word_to_guess, guess)
-
   word_to_guess.include?(guess[0])
 end
 
@@ -52,17 +51,16 @@ def update_correct_guess(correct_guess, guess, word_to_guess)
 end
 
 def hangman(number_of_chances = 8)
+  puts "Welcome to hangman!"
   word_to_guess = rand_word.split(//)
   unsolved = true
   correct_guess = Array.new(word_to_guess.length) { |i| i= ' _ ' }
 
-  #debugging area
-  print word_to_guess
 
 
-    #show_progress(word_to_guess, current_letters, guessed_letters)
     while number_of_chances > 0 && unsolved
       print_correct_letters( correct_guess)
+      puts "Chances remaining: #{number_of_chances}"
       guess = make_guess
 
       if is_in?(word_to_guess, guess)
@@ -71,9 +69,15 @@ def hangman(number_of_chances = 8)
           puts "Congratulations, you've guessed the word!"
           unsolved = false
         end
-
+      else
+        puts "Sorry, no #{guess}'s found"
       end
+      number_of_chances -= 1
+        if number_of_chances <= 0
+          puts "Sorry you lose the game"
+        else
 
+        end
     end
 
 end
