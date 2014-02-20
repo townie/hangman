@@ -25,6 +25,8 @@ end
 
 def rand_word
   #returns a word a random
+  words = %w(time person year way day thing man world life hand part child eye woman place work week case point government company number group problem fact)
+  words.shuffle.pop
 end
 
 def show_progess(word_to_guess, current_letters, guessed_letters)
@@ -48,5 +50,5 @@ def hangman
 
 
 end
-puts make_guess
-# hangman
+
+puts rand_word
