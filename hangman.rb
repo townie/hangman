@@ -30,7 +30,15 @@ def rand_word
 end
 
 def is_in?(word_to_guess, guess)
-  word_to_guess.include?(guess[0])
+  word_to_guess.include?(guess)
+end
+
+def show_count_of_guess( guess, word_to_guess)
+    count = 0
+    word_to_guess.each do |current|
+        count += 1 if current == guess
+    end
+    puts "\nFound #{count} occurrence(s) of the character #{guess}.\n"
 end
 
 def print_correct_letters(correct_guess)
@@ -38,16 +46,17 @@ def print_correct_letters(correct_guess)
 end
 
 def update_correct_guess(correct_guess, guess, word_to_guess)
-  if guess.split(//) == word_to_guess
-    return word_to_guess
-  end
-
   word_to_guess.each_with_index do |letter, position|
     if letter == guess
       correct_guess[position] = guess
     end
   end
   correct_guess
+end
+
+def win_game
+     puts "Congratulations, you've guessed the word!"
+    false
 end
 
 def hangman(number_of_chances = 8)
@@ -64,20 +73,27 @@ def hangman(number_of_chances = 8)
       guess = make_guess
 
       if is_in?(word_to_guess, guess)
+        show_count_of_guess( guess, word_to_guess)
         correct_guess = update_correct_guess(correct_guess, guess, word_to_guess)
-        if guess == word_to_guess.join || correct_guess == word_to_guess
-          puts "Congratulations, you've guessed the word!"
-          unsolved = false
+
+        if correct_guess == word_to_guess
+          unsolved = win_game
+        end
+      elsif guess.length > 1
+        if guess == word_to_guess.join
+          unsolved = win_game
+        else
+          puts "You Lose! #{guess} was not the correct word"
+          break
         end
       else
-        puts "Sorry, no #{guess}'s found"
+        puts "\nSorry, no #{guess}'s found \n"
+        number_of_chances -= 1
       end
-      number_of_chances -= 1
-        if number_of_chances <= 0
-          puts "Sorry you lose the game"
-        else
 
-        end
+      if number_of_chances <= 0
+          puts "Sorry you lose the game"
+      end
     end
 
 end
