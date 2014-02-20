@@ -20,7 +20,7 @@ def make_guess
         puts "Well clearly you didnt follow instructions you guess will count as #{guess}"
       end
   end
-  guess
+  guess.downcase
 end
 
 def rand_word
@@ -29,28 +29,48 @@ def rand_word
   words.shuffle.pop
 end
 
-def show_progess(word_to_guess, current_letters, guessed_letters)
-
-end
-
 def is_in?(word_to_guess, guess)
-  word_to_guess.include?(guess)
+
+  word_to_guess.include?(guess[0])
 end
 
 def print_correct_letters(correct_guess)
   print "Word: " + correct_guess.join + " \n "
 end
 
+def update_correct_guess(correct_guess, guess, word_to_guess)
+  if guess.split(//) == word_to_guess
+    return word_to_guess
+  end
+
+  word_to_guess.each_with_index do |letter, position|
+    if letter == guess
+      correct_guess[position] = guess
+    end
+  end
+  correct_guess
+end
+
 def hangman(number_of_chances = 8)
   word_to_guess = rand_word.split(//)
   unsolved = true
+  correct_guess = Array.new(word_to_guess.length) { |i| i= ' _ ' }
 
-   correct_guess = Array.new(word_to_guess.length) { |i| i= ' _ ' }
-  print_correct_letters( correct_guess)
+  #debugging area
+  print word_to_guess
+
+
     #show_progress(word_to_guess, current_letters, guessed_letters)
     while number_of_chances > 0 && unsolved
-     guess = make_guess
+      print_correct_letters( correct_guess)
+      guess = make_guess
+
       if is_in?(word_to_guess, guess)
+        correct_guess = update_correct_guess(correct_guess, guess, word_to_guess)
+        if guess == word_to_guess.join || correct_guess == word_to_guess
+          puts "Congratulations, you've guessed the word!"
+          unsolved = false
+        end
 
       end
 
