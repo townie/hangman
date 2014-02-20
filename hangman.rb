@@ -30,25 +30,32 @@ def rand_word
 end
 
 def show_progess(word_to_guess, current_letters, guessed_letters)
-  #puts out the current letters and how they match up with the current word
-end
-
-
-
-
-def hangman
-  # word_to_guess = rand_word
-  # loop
-  #   show_progress(word_to_guess, current_letters, guessed_letters)
-  #   guess = make_guess
-  #   if word_to_guess.include?(guess)
-
-  #   else
-  #   chances -= 1
-  #   end
-  # end
-
 
 end
 
-puts rand_word
+def is_in?(word_to_guess, guess)
+  word_to_guess.include?(guess)
+end
+
+def print_correct_letters(correct_guess)
+  print "Word: " + correct_guess.join + " \n "
+end
+
+def hangman(number_of_chances = 8)
+  word_to_guess = rand_word.split(//)
+  unsolved = true
+
+   correct_guess = Array.new(word_to_guess.length) { |i| i= ' _ ' }
+  print_correct_letters( correct_guess)
+    #show_progress(word_to_guess, current_letters, guessed_letters)
+    while number_of_chances > 0 && unsolved
+     guess = make_guess
+      if is_in?(word_to_guess, guess)
+
+      end
+
+    end
+
+end
+
+hangman
