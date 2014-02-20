@@ -59,15 +59,32 @@ def win_game
     false
 end
 
+def animate(init_chances, number_of_chances)
+
+  anime = File.open('animation.txt').to_a
+
+  location =   init_chances - number_of_chances
+
+  range_min = 0 + (location * 5)
+  range_max = 4 + (location * 5)
+
+  (range_min..range_max).each do |position|
+    puts anime[position]
+
+  end
+
+end
+
+
 def hangman(number_of_chances = 8)
+  init_chances = number_of_chances
   puts "Welcome to hangman!"
   word_to_guess = rand_word.split(//)
   unsolved = true
   correct_guess = Array.new(word_to_guess.length) { |i| i= ' _ ' }
 
-
-
     while number_of_chances > 0 && unsolved
+      animate(init_chances, number_of_chances)
       print_correct_letters( correct_guess)
       puts "Chances remaining: #{number_of_chances}"
       guess = make_guess
@@ -77,12 +94,15 @@ def hangman(number_of_chances = 8)
         correct_guess = update_correct_guess(correct_guess, guess, word_to_guess)
 
         if correct_guess == word_to_guess
+          animate(10,0)
           unsolved = win_game
         end
       elsif guess.length > 1
         if guess == word_to_guess.join
+          animate(10,0)
           unsolved = win_game
         else
+          animate(9,0)
           puts "You Lose! #{guess} was not the correct word"
           break
         end
@@ -92,6 +112,7 @@ def hangman(number_of_chances = 8)
       end
 
       if number_of_chances <= 0
+          animate(9,0)
           puts "Sorry you lose the game"
       end
     end
